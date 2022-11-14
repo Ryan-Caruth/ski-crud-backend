@@ -22,11 +22,9 @@ const userSchema = new Schema({
     },
     winterActivity: {
         type: [String],
-        required: true,
     },
     skillLevel: {
         type: [String],
-        required: true,
     },
 },
     { timestamps: true }
