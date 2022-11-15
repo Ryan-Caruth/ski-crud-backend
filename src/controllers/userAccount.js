@@ -15,11 +15,11 @@ const registration = async (req, res) => {
       return res
         .status(400)
         .send("Password must be at least 8 characters long");
-    if (password.search(/[a-z]/gi) < 1) 
+    if (password.search(/[a-z]/g) < 1) 
       return res
         .status(400)
         .send("Password must contain one lower case letter");
-    if (password.search(/[A-Z]/gi) < 1) 
+    if (password.search(/[A-Z]/g) < 1) 
       return res.status(400).send("Password must contain one uppercase letter");
     if (password.search(/[0-9]/gi) < 1) 
       return res.status(400).send("Password must contain at least one digit");
