@@ -24,7 +24,7 @@ const userSchema = new Schema({
         type: [String],
     },
     skillLevel: {
-        type: [String],
+        type: String
     },
 },
     { timestamps: true }
@@ -39,7 +39,7 @@ const findByEmail = async (email) => {
         return existingUser
     } catch (err) {
         console.log(err)
-        res.status(400).send();
+        // res.status(400).send();
     }
 }
 
