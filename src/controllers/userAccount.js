@@ -55,4 +55,49 @@ const registration = async (req, res) => {
   }
 };
 
-module.exports = { registration }
+//log the user in
+const login = async (req, res) => {
+  try {
+    const { email, password, confirmPass } = req.body;
+    //validate the user
+    if ((!email, !password, !confirmPass))
+      return res.status(400).send("Please fill out all required fields");
+    //Verify that the user exists
+    const existingUser = await findByEmail({ email: email });
+    if (!existingUser)
+      return res.status(401).send("Wrong email or password");
+    //Verify that the passwords match
+    const verifyPassword = await bcrypt.compare(
+      password,
+      existingUser.password
+    );
+    if (!verifyPassword)
+      return res.status(401).send("Wrong email or password");
+    //Sign the token
+    const token = jwt.sign(
+      {
+        user: existingUser._id,
+      },
+      process.env.JWT_SECRET
+    );
+    //Send taken to client and save the token
+    res.cookie("token", token, {
+      httpOnly: true,
+    }).send();
+    console.log(`logged in user ${existingUser.firstName} with id of ${existingUser._id}`);
+  } catch (err) {
+    console.log(err)
+    res.status(500).send();
+  }
+};
+
+//log the user out
+const logout = async (req, res) => {
+  const emptyToken = "";
+  res.cookie("token", emptyToken, {
+    httpOnly: true,
+    expires: new Date(0),
+  }).send();
+}
+
+module.exports = { registration, login, logout }
